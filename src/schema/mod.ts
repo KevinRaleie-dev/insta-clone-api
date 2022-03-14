@@ -7,6 +7,6 @@ export const signUpSchema = z.object({
 });
 
 export const signInSchema = z.object({
-    username: z.string().nonempty("Invalid username or password."),
-    password: z.string().nonempty("Invalid username or password."),
+    usernameOrEmail: z.string().nonempty({ message: "Property cannot be empty."}),
+    password: z.string().nonempty({ message: "Property cannot be empty."}),
 })

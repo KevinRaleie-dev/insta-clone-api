@@ -11,7 +11,10 @@ export class AuthResponse {
     node?: User;
 
     @Field(() => Boolean)
-    success: boolean; 
+    success: boolean;
+    
+    @Field({ nullable: true })
+    token?: string;
 }
 
 @ObjectType()

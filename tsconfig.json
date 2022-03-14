@@ -11,6 +11,7 @@
         "@graphql/*": ["./src/graphql/*"],
         "@dtos/*": ["./src/dtos/*"],
         "@utils/*": ["./src/utils/*"],
+        "@_types/*": ["src/_types/*"],
       },
       "lib": [
         "dom",
