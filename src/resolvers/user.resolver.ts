@@ -1,13 +1,17 @@
 import { Arg, Query, Resolver } from "type-graphql";
-import { getUsers, getUserById } from "@repository/user.repo";
+import { Service } from "typedi"
+import { UserRepo } from "@repository/user.repo";
 import { User } from "@entities/user.entity";
 
+@Service()
 @Resolver()
 export class UserResolver {
 
+    constructor(private readonly userRepo: UserRepo) {}
+
     @Query(() => [User])
     async getAllUsers(): Promise<User[]> {
-        const users = await getUsers()
+        const users = await this.userRepo.getUsers()
 
         return users;
     }
@@ -16,7 +20,7 @@ export class UserResolver {
     async getUser(
         @Arg('id') id: string
     ): Promise<User | null> {
-        const user = await getUserById(id);
+        const user = await this.userRepo.getUserById(id);
 
         return user;
     }

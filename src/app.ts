@@ -5,6 +5,8 @@ import express from 'express';
 
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
+import { Container } from 'typedi'
+
 import { HelloResolver } from '@resolvers/hello.resolver';
 import { AuthResolver } from '@resolvers/auth.resolver'
 import { UserResolver } from '@resolvers/user.resolver'
@@ -21,7 +23,8 @@ async function main() {
                 AuthResolver,
                 UserResolver
             ],
-            validate: false
+            validate: false,
+            container: Container
         })
     });
 

@@ -1,8 +1,10 @@
 import { Arg, Mutation, Resolver } from "type-graphql"
+import { Service } from "typedi"
+
 import { SignUpAuthInput, SignInAuthInput } from '@args/auth.input'
 import { AuthResponse } from '@graphql/auth.response'
 import { signUpSchema, signInSchema } from '@schema/mod'
-import { createUser, signInUser } from '@repository/user.repo'
+import { UserRepo } from '@repository/user.repo'
 import { ZodError } from "zod"
 
 // TODO: 
@@ -13,8 +15,11 @@ import { ZodError } from "zod"
 // [] reset password
 // [] delete account
 
+@Service()
 @Resolver()
 export class AuthResolver {
+
+    constructor(private readonly userRepo: UserRepo) { }    
 
     @Mutation(() => AuthResponse)
     async signUp(
@@ -36,7 +41,8 @@ export class AuthResolver {
         }
 
         // create a user
-        const { success, message, user } = await createUser(input);
+        
+        const { success, message, user } = await this.userRepo.createUser(input);
 
         if (!success) {
             return {
@@ -76,7 +82,7 @@ export class AuthResolver {
             }
         }
 
-        const { success, message, token } = await signInUser(input);
+        const { success, message, token } = await this.userRepo.signInUser(input);
 
         if (!success) {
             return {
