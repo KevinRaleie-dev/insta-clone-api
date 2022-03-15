@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const createAccessToken = (user: User): string => {
 
@@ -9,3 +9,5 @@ export const createAccessToken = (user: User): string => {
 
     return token;
 };
+
+export const verifyAccessToken = (token: string): string | JwtPayload => jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string)

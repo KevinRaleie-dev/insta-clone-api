@@ -8,8 +8,10 @@ import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi'
 
 import { HelloResolver } from '@resolvers/hello.resolver';
-import { AuthResolver } from '@resolvers/auth.resolver'
-import { UserResolver } from '@resolvers/user.resolver'
+import { AuthResolver } from '@resolvers/auth.resolver';
+import { UserResolver } from '@resolvers/user.resolver';
+import { MeResolver } from '@resolvers/me.resolver'
+import { Context } from '@context/mod'
 
 async function main() {
 
@@ -21,11 +23,13 @@ async function main() {
             resolvers: [
                 HelloResolver,
                 AuthResolver,
-                UserResolver
+                UserResolver,
+                MeResolver
             ],
             validate: false,
             container: Container
-        })
+        }),
+        context: ({ req, res }): Context => ({ req, res })
     });
 
     await apolloServer.start();

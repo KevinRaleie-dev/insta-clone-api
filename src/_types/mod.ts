@@ -11,3 +11,7 @@ export type SignInUserResponse = {
     message?: string;
     token?: string;
 }
+
+export type Payload = {
+    id: string;
+}

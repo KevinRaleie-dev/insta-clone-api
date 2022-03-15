@@ -12,6 +12,8 @@
         "@dtos/*": ["./src/dtos/*"],
         "@utils/*": ["./src/utils/*"],
         "@_types/*": ["src/_types/*"],
+        "@middlewares/*": ["src/middlewares/*"],
+        "@context/*": ["src/context/*"],
       },
       "lib": [
         "dom",
