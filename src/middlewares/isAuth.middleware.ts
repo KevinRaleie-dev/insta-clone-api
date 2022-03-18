@@ -1,6 +1,7 @@
 import { Context } from '@context/mod'
 import { MiddlewareFn, NextFn } from 'type-graphql'
 import { verifyAccessToken } from '@utils/jwt.util'
+import { throwError } from '@utils/error.util';
 
 export const isAuth: MiddlewareFn<Context> = ({ context }, next: NextFn): any => {
 
@@ -17,7 +18,7 @@ export const isAuth: MiddlewareFn<Context> = ({ context }, next: NextFn): any =>
         context.payload = payload as any;
 
     } catch (error) {
-        throw new Error(error.message)
+        throwError(error.message)
     }
 
     return next()
