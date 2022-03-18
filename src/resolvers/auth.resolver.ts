@@ -1,4 +1,4 @@
-import { Arg, Mutation, Resolver } from "type-graphql"
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
 import { Service } from "typedi"
 
 import { SignUpAuthInput, SignInAuthInput } from '@args/auth.input'
@@ -6,6 +6,8 @@ import { AuthResponse } from '@graphql/auth.response'
 import { signUpSchema, signInSchema } from '@schema/mod'
 import { UserRepo } from '@repository/user.repo'
 import { ZodError } from "zod"
+import { isAuth } from "@middlewares/isAuth.middleware"
+import { Context } from "@context/mod"
 
 // TODO: 
 // auth will consist of these methods:
@@ -13,7 +15,7 @@ import { ZodError } from "zod"
 // [x] sign-up
 // [] forgot password
 // [] reset password
-// [] delete account
+// [x] delete account
 
 @Service()
 @Resolver()
@@ -101,6 +103,18 @@ export class AuthResolver {
             }
         }
         
+    }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async deleteAccount(
+        @Ctx() { payload }: Context
+    ): Promise<boolean> {
+        const isDeleted = await this.userRepo.deleteUser(payload?.id!);
+
+        if(isDeleted) return true;
+
+        return false;
     }
 
 }

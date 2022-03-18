@@ -12,6 +12,7 @@ const prisma = new PrismaClient();
 @Service()
 export class UserRepo {
 
+    // TODO: limit to how many i can get back
     async getUsers(): Promise<User[]> {
         return await prisma.user.findMany();
     }
@@ -73,7 +74,6 @@ export class UserRepo {
 
         const user = await prisma.user.findFirst({
             where: {
-                // username: data.usernameOrEmail
                 OR: [
                     {
                         username: {
@@ -113,7 +113,27 @@ export class UserRepo {
             success: true,
             token
         }
-    }   
+    }
+    
+    async deleteUser(id: string): Promise<boolean> {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        });
+        
+        if(user) {
+            await prisma.user.delete({
+                where: {
+                    id: user.id
+                }
+            });
+
+            return true;
+        }
+
+        return false
+    }
 }
 
 
