@@ -12,6 +12,10 @@ export type SignInUserResponse = {
     token?: string;
 }
 
+export type FollowUserResponse = CreateUserResponse & {
+    error?: any
+}
+
 export type Payload = {
     id: string;
 }
