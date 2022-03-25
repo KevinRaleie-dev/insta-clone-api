@@ -145,6 +145,8 @@ export class UserRepo {
 
         const users: User[] = [];
 
+        // if(userIds.length === 0) return;
+
         if(type === "followers") {
             for (let ids of userIds) {
                 const user = await prisma.user.findUnique({
