@@ -1,6 +1,6 @@
 import type { CreateUserDTO } from '@dtos/createUser.dto'
 import type { SignInUserDTO } from '@dtos/signInUser.dto';
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, Relations, User } from '@prisma/client';
 import { Service } from 'typedi'
 
 import { compareHash, generateHash } from '@utils/hash.util'
@@ -8,7 +8,8 @@ import { createAccessToken } from '@utils/jwt.util'
 import type { 
 CreateUserResponse, 
 SignInUserResponse, 
-FollowUserResponse
+FollowUserResponse,
+WhichType
 } from '@_types/mod';
 
 const prisma = new PrismaClient();
@@ -32,7 +33,7 @@ export class UserRepo {
         if (findByEmail) {
             return {
                 success: false,
-                message: "Account already exists."
+                message: "This account is already taken."
             }
         }
     
@@ -45,7 +46,7 @@ export class UserRepo {
         if (findByUsername) {
             return {
                 success: false,
-                message: "This username is already taken."
+                message: "This account is already taken."
             }
         }
     
@@ -139,24 +140,40 @@ export class UserRepo {
         return false
     }
 
-    // async #getMultipleUsersById(userIds: Array<string>) { 
+    // accept an array of relations instead of an array of strings along with the type of users
+    async getMultipleUsersById(userIds: Relations[], type: WhichType): Promise<User[]> { 
 
-    //     const users: User[] = []
+        const users: User[] = [];
 
-    //     for (const id in userIds) {
-    //         const user = await prisma.user.findUnique({
-    //             where: {
-    //                 id
-    //             }
-    //         });
+        if(type === "followers") {
+            for (let ids of userIds) {
+                const user = await prisma.user.findUnique({
+                    where: {
+                        id: ids.follower_id!
+                    }
+                });
 
-    //         if (user) {
-    //             users.push(user)
-    //         }
-    //     }
+                if (user) {
+                    users.push(user);
+                }
+            }
+        }
+        else {
+            for (const ids of userIds) {
+                const user = await prisma.user.findUnique({
+                    where: {
+                        id: ids.followed_id!
+                    }
+                });
+                
+                if(user) {
+                    users.push(user);
+                }
+            }
+        }
 
-    //     return users
-    // }
+        return users
+    }
 
     // maybe seperate them into different functions?
     async followUser(follwerId: string, followingId: string): Promise<FollowUserResponse> { 
@@ -167,7 +184,7 @@ export class UserRepo {
             if (!following) {
                 return {
                     success: false,
-                    message: "There's no user with that id."
+                    message: "Could not find the requested user."
                 }
             }
 
@@ -187,7 +204,7 @@ export class UserRepo {
             if (!follower) {
                 return {
                     success: false,
-                    message: "Could not find user with that id."
+                    message: "Could not find the requested user."
                 }
             }
 

@@ -5,12 +5,13 @@ import { User } from "@entities/user.entity";
 import { isAuth } from "@middlewares/isAuth.middleware";
 import { Context } from "@context/mod";
 import { FollowUserResponse } from "@graphql/follow.response"
+import { RelationsRepo } from "@repository/relations.repo";
 
 @Service()
 @Resolver()
 export class UserResolver {
 
-    constructor(private readonly userRepo: UserRepo) {}
+    constructor(private readonly userRepo: UserRepo, private readonly relationsRepo: RelationsRepo) {}
 
     @Query(() => [User])
     async getAllUsers(): Promise<User[]> {
@@ -31,11 +32,12 @@ export class UserResolver {
     @Mutation(() => FollowUserResponse)
     @UseMiddleware(isAuth)
     async followUser(
-        @Arg('followingId', { description: "The user id of the person we're following"}) followingId: string,
+        @Arg('followingId', { description: "The user id of the person we're following" }) followingId: string,
         @Ctx() { payload }: Context
     ): Promise<FollowUserResponse> {
 
-        const { user, success, message } = await this.userRepo.followUser(payload?.id!, followingId)
+        // const { user, success, message } = await this.userRepo.followUser(payload?.id!, followingId)
+        const { success, message, user } = await this.relationsRepo.followUser({ meId: payload?.id!, personImFollowingId: followingId });
 
         if(!success) {
             return {
@@ -45,6 +47,21 @@ export class UserResolver {
 
         return {
             user
+        }
+    }
+
+    @Mutation(() => FollowUserResponse)
+    @UseMiddleware(isAuth)
+    async unfollowUser(
+        @Arg('followingId') followingId: string,
+        @Ctx() { payload }: Context
+    ): Promise<FollowUserResponse> {
+
+        const { success, message } = await this.relationsRepo.unfollowUser({ meId: payload?.id!, personImFollowingId: followingId });
+
+        return {
+            success,
+            message
         }
     }
 }
