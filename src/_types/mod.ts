@@ -4,7 +4,8 @@ type Message = "Invalid username/email or password." |
 "Could not find the requested user." |
 "You're already following this user." |
 "This account is already taken." | 
-"You're not following this user."
+"You're not following this user." |
+"You're not allowed to follow yourself."
 
 type CommonResponse = {
     success: boolean;

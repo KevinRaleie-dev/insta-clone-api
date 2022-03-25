@@ -32,6 +32,7 @@ export class RelationsRepo {
         return isFollowing ? true : false;
     }
 
+    // TODO: Make user users do not follow themselves
     async followUser(relations: RelationsDTO): Promise<FollowUserResponse> {
         const user = await this.userRepo.getUserById(relations.personImFollowingId);
 
@@ -39,6 +40,13 @@ export class RelationsRepo {
             return {
                 success: false,
                 message: "Could not find the requested user."
+            }
+        }
+
+        if (user.id === relations.meId) {
+            return {
+                success: false,
+                message: "You're not allowed to follow yourself."
             }
         }
 

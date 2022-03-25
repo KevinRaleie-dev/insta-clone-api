@@ -4,7 +4,8 @@ import { UserRepo } from "@repository/user.repo";
 import { User } from "@entities/user.entity";
 import { isAuth } from "@middlewares/isAuth.middleware";
 import { Context } from "@context/mod";
-import { FollowUserResponse } from "@graphql/follow.response"
+import { FollowUserResponse } from "@graphql/follow.response";
+import { UserResponse } from "@graphql/user.response";
 import { RelationsRepo } from "@repository/relations.repo";
 
 @Service()
@@ -20,13 +21,32 @@ export class UserResolver {
         return users;
     }
 
-    @Query(() => User, { nullable: true })
+    @Query(() => UserResponse, { nullable: true })
     async getUser(
         @Arg('id') id: string
-    ): Promise<User | null> {
+    ): Promise<UserResponse | null> {
         const user = await this.userRepo.getUserById(id);
 
-        return user;
+        if(!user) {
+            return null;
+        }
+
+        const [followers, following] = await Promise.all([
+            this.relationsRepo.getFollowers(id),
+            this.relationsRepo.getFollowing(id)
+        ]);
+
+        if (followers && following) {
+            return {
+                user,
+                follower_count: followers.length,
+                following_count: following.length,
+                followers,
+                following
+            }
+        }
+
+        return null;
     }
 
     @Mutation(() => FollowUserResponse)
@@ -36,7 +56,6 @@ export class UserResolver {
         @Ctx() { payload }: Context
     ): Promise<FollowUserResponse> {
 
-        // const { user, success, message } = await this.userRepo.followUser(payload?.id!, followingId)
         const { success, message, user } = await this.relationsRepo.followUser({ meId: payload?.id!, personImFollowingId: followingId });
 
         if(!success) {
