@@ -7,13 +7,19 @@ generator client {
     provider = "prisma-client-js"
 }
 
+model Relations {
+    id          String  @id @default(cuid())
+    followed_id String?
+    follower_id String?
+}
+
 model User {
     id        String   @id @default(cuid())
     username  String
     email     String   @unique
     password  String
     profile   Profile?
-    followers String[] 
+    followers String[]
     following String[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
