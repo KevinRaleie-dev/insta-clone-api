@@ -15,12 +15,6 @@ export class User {
 
     password: string;
 
-    @Field(() => [String])
-    followers: string[];
-
-    @Field(() => [String])
-    following: string[];
-
     @Field(() => Profile, { nullable: true })
     profile?: Profile;
 

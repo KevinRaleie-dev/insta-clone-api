@@ -8,7 +8,6 @@ import { createAccessToken } from '@utils/jwt.util'
 import type { 
 CreateUserResponse, 
 SignInUserResponse, 
-FollowUserResponse,
 WhichType
 } from '@_types/mod';
 
@@ -145,8 +144,6 @@ export class UserRepo {
 
         const users: User[] = [];
 
-        // if(userIds.length === 0) return;
-
         if(type === "followers") {
             for (let ids of userIds) {
                 const user = await prisma.user.findUnique({
@@ -175,76 +172,6 @@ export class UserRepo {
         }
 
         return users
-    }
-
-    // maybe seperate them into different functions?
-    async followUser(follwerId: string, followingId: string): Promise<FollowUserResponse> { 
-        // add me to the user im following under followers and add them under who im following
-        try {
-            const following = await this.getUserById(followingId);
-
-            if (!following) {
-                return {
-                    success: false,
-                    message: "Could not find the requested user."
-                }
-            }
-
-            // if there is a user then lets find out if we follow them
-            const isFollowing = following.followers.find(id => id === follwerId);
-            
-            if(isFollowing) {
-                return {
-                    success: false,
-                    message: "You're already following this user."
-                }
-            }
-
-            // if undefined then add to their followers and your following
-            const follower = await this.getUserById(follwerId)
-            
-            if (!follower) {
-                return {
-                    success: false,
-                    message: "Could not find the requested user."
-                }
-            }
-
-            // following.followers.push(follower.id);
-            await prisma.user.update({
-                where: {
-                    id: following.id
-                },
-                data: {
-                    followers: {
-                        push: follower.id
-                    }
-                }
-            })
-
-            // follower.following.push(following.id)
-            await prisma.user.update({
-                where: {
-                    id: follower.id
-                },
-                data: {
-                    following: {
-                        push: following.id
-                    }
-                }
-            })
-
-            return {
-                success: true,
-                user: following,
-            }
-
-        } catch (error) {
-            return {
-                success: false,
-                error: error.message
-            }
-        }
     }
 }
 

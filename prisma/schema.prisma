@@ -19,8 +19,6 @@ model User {
     email     String   @unique
     password  String
     profile   Profile?
-    followers String[]
-    following String[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
