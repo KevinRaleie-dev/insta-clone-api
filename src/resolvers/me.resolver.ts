@@ -23,16 +23,18 @@ export class MeResolver {
             return null;
         }
 
-        const [followers, following] = await Promise.all([
+        const [followers, following, followers_count, following_count ] = await Promise.all([
             this.relationsRepo.getFollowers(payload?.id!),
-            this.relationsRepo.getFollowing(payload?.id!)
+            this.relationsRepo.getFollowing(payload?.id!),
+            this.relationsRepo.getFollowersCount(payload?.id!),
+            this.relationsRepo.getFollowingCount(payload?.id!),
         ]);
 
         if (followers && following) {
             return {
                 user,
-                follower_count: followers.length,
-                following_count: following.length,
+                followers_count,
+                following_count,
                 followers,
                 following
             }

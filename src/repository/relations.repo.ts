@@ -149,4 +149,24 @@ export class RelationsRepo {
         return users;
     }
 
+    async getFollowersCount(meId: string) {
+        const relations = await prisma.relations.findMany({
+            where: {
+                followed_id: meId
+            }
+        });
+
+        return relations.length;
+    }
+
+    async getFollowingCount(meId: string) {
+        const relations = await prisma.relations.findMany({
+            where: {
+                follower_id: meId
+            }
+        });
+
+        return relations.length;
+    }
+
 }

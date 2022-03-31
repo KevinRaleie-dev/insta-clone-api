@@ -11,7 +11,7 @@ export class MeResponse {
     following_count?: number;
 
     @Field(() => Int, { nullable: true })
-    follower_count?: number;
+    followers_count?: number;
 
     @Field(() => [User], { nullable: true })
     followers?: User[];

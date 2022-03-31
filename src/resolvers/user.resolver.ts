@@ -31,16 +31,18 @@ export class UserResolver {
             return null;
         }
 
-        const [followers, following] = await Promise.all([
+        const [followers, following, followers_count, following_count] = await Promise.all([
             this.relationsRepo.getFollowers(id),
-            this.relationsRepo.getFollowing(id)
+            this.relationsRepo.getFollowing(id),
+            this.relationsRepo.getFollowersCount(id),
+            this.relationsRepo.getFollowingCount(id)
         ]);
 
         if (followers && following) {
             return {
                 user,
-                follower_count: followers.length,
-                following_count: following.length,
+                followers_count ,
+                following_count,
                 followers,
                 following
             }

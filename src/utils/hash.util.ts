@@ -10,4 +10,4 @@ export const generateHash = (str: string): string => {
     return hash;
 }
 
-export const compareHash = (hash: string, str: string): boolean => bcrypt.compareSync(str, hash)
+export const compareHash = (hash: string, str: string): boolean => bcrypt.compareSync(str, hash);
