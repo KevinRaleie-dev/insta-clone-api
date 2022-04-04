@@ -1,10 +1,10 @@
+import { Context } from "@context/mod";
+import { MeResponse } from "@graphql/me.response";
+import { isAuth } from "@middlewares/isAuth.middleware";
+import { RelationsRepo } from "@repository/relations.repo";
 import { UserRepo } from "@repository/user.repo";
-import { isAuth } from "@middlewares/isAuth.middleware"
 import { Ctx, Query, Resolver, UseMiddleware } from "type-graphql";
 import { Service } from "typedi";
-import { Context } from "@context/mod";
-import { MeResponse } from "@graphql/me.response"
-import { RelationsRepo } from "@repository/relations.repo";
 
 @Service()
 @Resolver()

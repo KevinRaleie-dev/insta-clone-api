@@ -1,13 +1,13 @@
+import { SignInAuthInput, SignUpAuthInput } from '@args/auth.input'
+import { Context } from "@context/mod"
+import { AuthResponse } from '@graphql/auth.response'
+import { isAuth } from "@middlewares/isAuth.middleware"
+import { UserRepo } from '@repository/user.repo'
+import { signInSchema, signUpSchema } from '@schema/mod'
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
 import { Service } from "typedi"
-
-import { SignUpAuthInput, SignInAuthInput } from '@args/auth.input'
-import { AuthResponse } from '@graphql/auth.response'
-import { signUpSchema, signInSchema } from '@schema/mod'
-import { UserRepo } from '@repository/user.repo'
 import { ZodError } from "zod"
-import { isAuth } from "@middlewares/isAuth.middleware"
-import { Context } from "@context/mod"
+
 
 // TODO: 
 // auth will consist of these methods:
