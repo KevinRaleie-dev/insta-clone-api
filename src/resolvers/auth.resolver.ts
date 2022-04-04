@@ -32,11 +32,12 @@ export class AuthResolver {
         try {
             await signUpSchema.parseAsync(input)
         } catch (error) {
-            if(error instanceof ZodError) {                                
+            if(error instanceof ZodError) {
+                const { message, path } = error.issues[0];                        
                 return {
                     success: false,
                     error: [
-                        { message: error.issues[0].message }
+                        { message, field: String(path[0]) }
                     ]
                 }                
             }
@@ -73,11 +74,13 @@ export class AuthResolver {
             await signInSchema.parseAsync(input);
         } catch (error) {
             if(error instanceof ZodError) {
+                const { message, path } = error.issues[0];
                 return {
                     success: false,
                     error: [
                         {
-                            message: error.issues[0].message
+                            message,
+                            field: String(path[0])
                         }
                     ]
                 }
