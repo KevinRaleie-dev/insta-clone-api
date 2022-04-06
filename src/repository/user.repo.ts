@@ -32,6 +32,7 @@ export class UserRepo {
         if (findByEmail) {
             return {
                 success: false,
+                field: "email",
                 message: "This account is already taken."
             }
         }
@@ -45,6 +46,7 @@ export class UserRepo {
         if (findByUsername) {
             return {
                 success: false,
+                field: "username",
                 message: "This account is already taken."
             }
         }
@@ -97,6 +99,7 @@ export class UserRepo {
         if (user === null) {
             return {
                 success: false,
+                field: "email",
                 message: "Invalid username/email or password."
             }
         }
@@ -106,6 +109,7 @@ export class UserRepo {
         if (!isValidPassword) {
             return {
                 success: false,
+                field: "password",
                 message: "Invalid username/email or password."
             }
         }

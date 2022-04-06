@@ -7,6 +7,8 @@ type Message = "Invalid username/email or password." |
 "You're not following this user." |
 "You're not allowed to follow yourself."
 
+type Field = "email" | "username" | "password";
+
 type CommonResponse = {
     success: boolean;
     message?: Message;
@@ -14,10 +16,12 @@ type CommonResponse = {
 
 export type CreateUserResponse = CommonResponse & {
     user?: User;
+    field?: Field;
 }
 
 export type SignInUserResponse = CommonResponse & {
     token?: string;
+    field?: Field;
 }
 
 export type FollowUserResponse = CreateUserResponse & {

@@ -45,14 +45,15 @@ export class AuthResolver {
 
         // create a user
         
-        const { success, message, user } = await this.userRepo.createUser(input);
+        const { success, message, user, field } = await this.userRepo.createUser(input);
 
         if (!success) {
             return {
                 success,
                 error: [
                     {
-                        message: String(message)
+                        message: String(message),
+                        field
                     }
                 ]
             }
@@ -87,14 +88,15 @@ export class AuthResolver {
             }
         }
 
-        const { success, message, token } = await this.userRepo.signInUser(input);
+        const { success, message, token, field } = await this.userRepo.signInUser(input);
 
         if (!success) {
             return {
                 success,
                 error: [
                     {
-                        message: String(message)
+                        message: String(message),
+                        field
                     }
                 ]
             }

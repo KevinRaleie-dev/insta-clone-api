@@ -1,12 +1,12 @@
-import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
-import { Service } from "typedi"
-import { UserRepo } from "@repository/user.repo";
-import { User } from "@entities/user.entity";
-import { isAuth } from "@middlewares/isAuth.middleware";
 import { Context } from "@context/mod";
+import { User } from "@entities/user.entity";
 import { FollowUserResponse } from "@graphql/follow.response";
 import { UserResponse } from "@graphql/user.response";
+import { isAuth } from "@middlewares/isAuth.middleware";
 import { RelationsRepo } from "@repository/relations.repo";
+import { UserRepo } from "@repository/user.repo";
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+import { Service } from "typedi";
 
 @Service()
 @Resolver()
