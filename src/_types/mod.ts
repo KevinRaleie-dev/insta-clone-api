@@ -7,7 +7,7 @@ type Message = "Invalid username/email or password." |
 "You're not following this user." |
 "You're not allowed to follow yourself."
 
-type Field = "email" | "username" | "password";
+type Field = "email" | "username" | "password" | "usernameOrEmail";
 
 type CommonResponse = {
     success: boolean;

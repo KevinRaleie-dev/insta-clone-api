@@ -99,7 +99,7 @@ export class UserRepo {
         if (user === null) {
             return {
                 success: false,
-                field: "email",
+                field: "usernameOrEmail",
                 message: "Invalid username/email or password."
             }
         }
