@@ -30,7 +30,7 @@ export class MeResolver {
             this.relationsRepo.getFollowingCount(payload?.id!),
         ]);
 
-        if (followers && following) {
+        if (followers && following && followers_count && following_count) {
             return {
                 user,
                 followers_count,

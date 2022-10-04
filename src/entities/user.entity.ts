@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
+import { Post } from "./post.entity";
 import { Profile } from './profile.entity'
 
 @ObjectType()
@@ -12,6 +13,9 @@ export class User {
 
     @Field()
     email: string;
+
+    @Field(() => [Post])
+    posts?: Post[];
 
     password: string;
 

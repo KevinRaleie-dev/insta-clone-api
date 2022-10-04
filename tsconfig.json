@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "target": "es6",
+      "target": "ES2022",
       "module": "commonjs",
       "paths": {
         "@resolvers/*": ["./src/resolvers/*"],
@@ -13,7 +13,7 @@
         "@utils/*": ["./src/utils/*"],
         "@_types/*": ["src/_types/*"],
         "@middlewares/*": ["src/middlewares/*"],
-        "@context/*": ["src/context/*"],
+        "@context/*": ["src/context/*"]
       },
       "lib": [
         "dom",
