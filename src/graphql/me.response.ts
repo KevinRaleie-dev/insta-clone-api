@@ -18,4 +18,7 @@ export class MeResponse {
 
     @Field(() => [User], { nullable: true })
     following?: User[];
+
+    @Field(() => String, { nullable: true })
+    errorMessage?: string
 }

@@ -14,9 +14,13 @@ import prisma from "../lib/prisma.lib";
 
 @Service()
 export class UserRepo {
-  // TODO: limit to how many i can get back
-  async getUsers(): Promise<User[]> {
-    return await prisma.user.findMany();
+  async getUsers() {
+    return await prisma.user.findMany({
+      take: 10,
+      include: {
+        profile: true,
+      },
+    });
   }
 
   async createUser(user: CreateUserDTO): Promise<CreateUserResponse> {
@@ -58,11 +62,14 @@ export class UserRepo {
     };
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string) {
     return await prisma.user.findUnique({
       where: {
         id,
       },
+      include: {
+        profile: true
+      }
     });
   }
 

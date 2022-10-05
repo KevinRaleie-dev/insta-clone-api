@@ -12,6 +12,7 @@ import { AuthResolver } from '@resolvers/auth.resolver';
 import { UserResolver } from '@resolvers/user.resolver';
 import { MeResolver } from '@resolvers/me.resolver'
 import { PostResolver } from '@resolvers/post.resolver';
+import { ProfileResolver } from "@resolvers/profile.resolver"
 import { Context } from '@context/mod'
 
 async function main() {
@@ -26,7 +27,8 @@ async function main() {
                 AuthResolver,
                 UserResolver,
                 MeResolver,
-                PostResolver
+                PostResolver,
+                ProfileResolver
             ],
             validate: false,
             container: Container

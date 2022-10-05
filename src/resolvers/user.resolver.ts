@@ -15,7 +15,7 @@ export class UserResolver {
     constructor(private readonly userRepo: UserRepo, private readonly relationsRepo: RelationsRepo) {}
 
     @Query(() => [User])
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers() {
         const users = await this.userRepo.getUsers()
 
         return users;
@@ -24,7 +24,7 @@ export class UserResolver {
     @Query(() => UserResponse, { nullable: true })
     async getUser(
         @Arg('id') id: string
-    ): Promise<UserResponse | null> {
+    ) {
         const user = await this.userRepo.getUserById(id);
 
         if(!user) {

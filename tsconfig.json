@@ -13,7 +13,8 @@
         "@utils/*": ["./src/utils/*"],
         "@_types/*": ["src/_types/*"],
         "@middlewares/*": ["src/middlewares/*"],
-        "@context/*": ["src/context/*"]
+        "@context/*": ["src/context/*"],
+        "@lib/*": ["src/lib/*"]
       },
       "lib": [
         "dom",
