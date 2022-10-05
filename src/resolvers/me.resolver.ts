@@ -16,11 +16,13 @@ export class MeResolver {
     @UseMiddleware(isAuth)
     async me(
         @Ctx() { payload }: Context
-    ): Promise<MeResponse | null> {
+    ) {
         const user = await this.userRepo.getUserById(payload?.id!)
 
         if (!user) {
-            return null;
+            return {
+                errorMessage: "Could not find the currently logged in user."
+            };
         }
 
         const [followers, following, followers_count, following_count ] = await Promise.all([
@@ -40,7 +42,9 @@ export class MeResolver {
             }
         }
         
-        return null;
+        return {
+            errorMessage: "Something unexpectedly went wrong."
+        };
 
     }
 }

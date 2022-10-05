@@ -7,6 +7,16 @@ generator client {
     provider = "prisma-client-js"
 }
 
+model Post {
+    id        String   @id @default(cuid())
+    image_url String
+    caption   String
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model Relations {
     id          String  @id @default(cuid())
     followed_id String?
@@ -21,11 +31,12 @@ model User {
     profile   Profile?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    posts     Post[]
 }
 
 model Profile {
     id     String @id @default(cuid())
-    bio    String
+    bio    String @db.Text
     User   User   @relation(fields: [userId], references: [id])
     userId String @unique
 }

@@ -1,15 +1,13 @@
-import { ObjectType, Field } from "type-graphql";
-import { User } from "./user.entity";
+import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class Profile {
+  @Field({ nullable: true })
+  id?: string;
 
-    @Field()
-    id: string;
+  @Field({ nullable: true })
+  bio?: string;
 
-    @Field()
-    bio?: string;
-
-    @Field(() => User)
-    user: User;
+  @Field({ nullable: true })
+  userId?: string;
 }

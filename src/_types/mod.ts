@@ -7,7 +7,10 @@ type Message = "Invalid username/email or password." |
 "You're not following this user." |
 "You're not allowed to follow yourself."
 
-type Field = "email" | "username" | "password" | "usernameOrEmail";
+const ArrayOfFields = ["email", "username", "password", "usernameOrEmail"] as const;
+type Fields = typeof ArrayOfFields
+
+type Field = Fields[number]
 
 type CommonResponse = {
     success: boolean;

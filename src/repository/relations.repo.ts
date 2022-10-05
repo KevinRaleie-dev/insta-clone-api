@@ -32,7 +32,7 @@ export class RelationsRepo {
         return isFollowing ? true : false;
     }
 
-    // TODO: Make user users do not follow themselves
+    // TODO: Make sure users do not follow themselves
     async followUser(relations: RelationsDTO): Promise<FollowUserResponse> {
         const user = await this.userRepo.getUserById(relations.personImFollowingId);
 
@@ -125,11 +125,12 @@ export class RelationsRepo {
         }
     }
 
-    async getFollowers(meId: string) {
+    async getFollowers(meId: string) { // add more pagination here
         const relations = await prisma.relations.findMany({
             where: {
                 followed_id: meId
-            }
+            },
+            take: 10
         })
 
         const users = await this.userRepo.getMultipleUsersById(relations, "followers");
@@ -150,13 +151,11 @@ export class RelationsRepo {
     }
 
     async getFollowersCount(meId: string) {
-        const relations = await prisma.relations.count({
+        return await prisma.relations.count({
             where: {
                 followed_id: meId
             }
         });
-
-        return relations;
     }
 
     async getFollowingCount(meId: string) {
